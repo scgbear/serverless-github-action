@@ -5,7 +5,7 @@ import { FormatType, SecretParser } from 'actions-secret-parser';
 export function parseLoginVariables() {
     let creds = core.getInput('credentialssecret', { required: true });
     let secrets = new SecretParser(creds, FormatType.JSON);
-    let authType = AuthenticationTypeUtil.FromString(secrets.getSecret("$.authType", false));
+    let authType = AuthenticationTypeUtil.FromString(core.getInput('authtype', { required: true }));
     switch (authType) {
         case AuthenticationTypeConst.AWS : {
             parseAWSSecrets(secrets);
