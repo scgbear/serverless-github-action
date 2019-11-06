@@ -1,9 +1,14 @@
 import * as core from '@actions/core';
-import { parseLoginVariables } from './utils/parser';
+import { CredentialParser } from './CredentialParser';
+import {AuthenticationTypeUtil } from './constants/authenticationType';
 
 async function run() {
   try {
-    parseLoginVariables();
+    const creds = core.getInput('credentialssecret', { required: true });
+    const authType = AuthenticationTypeUtil.FromString(core.getInput('authtype', { required: true }));
+
+    const credentialParser = new CredentialParser(authType, creds);
+    credentialParser.setLoginVariables();
 
   } catch (error) {
     core.setFailed(error.message);
