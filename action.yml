@@ -1,0 +1,14 @@
+name: 'Serverless Framework'
+description: 'Runs Serverless Framework commands.'
+author: 'CSE'
+inputs:
+  yamlFile:
+    description: 'The serverless yaml file'
+    required: true
+    default: 'serverless.yml'
+  credentialsSecret: 
+    description: 'The name of the GitHub secret that has the login credentials configured'
+    required: true
+runs:
+  using: 'node12'
+  main: 'lib/main.js'
