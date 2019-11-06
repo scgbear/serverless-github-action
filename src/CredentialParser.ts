@@ -1,5 +1,5 @@
 import * as core from '@actions/core';
-import {AuthenticationTypeUtil, AuthenticationTypeConst } from './constants/authenticationType';
+import { AuthenticationTypeConst } from './constants/authenticationType';
 import { FormatType, SecretParser } from 'actions-secret-parser';
 
 export class CredentialParser {
@@ -21,6 +21,9 @@ export class CredentialParser {
             case AuthenticationTypeConst.Azure : {
                 this.setAzureServicePrincipal(secrets);
                 break;
+            }
+            default : {
+                throw new Error('Invalid Authentication Type')
             }
         }
     }
