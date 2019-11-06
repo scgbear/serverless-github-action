@@ -12,6 +12,7 @@ inputs:
   authType: 
     description: 'Type of authorization to parse. Options include AWS and Azure'
     required: true
+    default: 'Azure'
 runs:
   using: 'node12'
   main: 'lib/main.js'
