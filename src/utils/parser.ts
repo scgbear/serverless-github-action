@@ -28,13 +28,13 @@ function parseAWSSecrets(secrets:SecretParser) {
     core.exportVariable('AWS_ACCESS_KEY_ID',  accessKeyId);
     core.exportVariable('AWS_SECRET_ACCESS_KEY',  accessKeyId);
     
-    console.log('AWS Login settings configured.');    
+    core.info('AWS Login settings configured.');    
 }
 
 function parseAzureServicePrincipal(secrets:SecretParser) {
-    let servicePrincipalId = secrets.getSecret('$.clientId', false);
-    let servicePrincipalKey = secrets.getSecret('$.clientSecret', true);
-    let tenantId = secrets.getSecret('$.tenantId', false);
+    let servicePrincipalId = secrets.getSecret('$.appId', false);
+    let servicePrincipalKey = secrets.getSecret('$.password', true);
+    let tenantId = secrets.getSecret('$.tenant', false);
     let subscriptionId = secrets.getSecret('$.subscriptionId', false);
     if (!servicePrincipalId || !servicePrincipalKey || !tenantId || !subscriptionId) {
         throw new Error('Not all values are present in the creds object. Ensure clientId, clientSecret, tenantId and subscriptionId are supplied');
@@ -45,5 +45,5 @@ function parseAzureServicePrincipal(secrets:SecretParser) {
     core.exportVariable('AZURE_CLIENT_ID', servicePrincipalId);
     core.exportVariable('AZURE_CLIENT_SECRET', servicePrincipalKey);
     
-    console.log('Azure Login settings configured.');    
+    core.info('Azure Login settings configured.');    
 }

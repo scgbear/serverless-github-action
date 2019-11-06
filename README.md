@@ -134,8 +134,8 @@ Follow the steps to configure the secret:
   # The command should output a JSON object similar to this:
 
   {
-    "clientId": "<GUID>",
-    "clientSecret": "<GUID>",
+    "appId": "<GUID>",
+    "password": "<GUID>",
     "subscriptionId": "<GUID>",
     "tenantId": "<GUID>",
     (...)
