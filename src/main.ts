@@ -1,15 +1,35 @@
 import * as core from '@actions/core';
+import { SlsCli } from './slsCli';
+import { SlsOptions } from './slsOptions';
 import { CredentialParser } from './CredentialParser';
-import {AuthenticationTypeUtil } from './constants/authenticationType';
 
 async function run() {
   try {
-    const creds = core.getInput('credentialssecret', { required: true });
-    const authType = AuthenticationTypeUtil.FromString(core.getInput('authtype', { required: true }));
+    const version = require('../package.json').version;
+    console.log(`Running serverless action v${version}...`);
 
-    const credentialParser = new CredentialParser(authType, creds);
+    const yamlFile = core.getInput('yamlFile');
+    core.debug(`yamlFile=${yamlFile}`);
+
+    const creds = core.getInput('credentials', { required: true });
+
+    const slsOptions: SlsOptions = {
+      command: 'version',
+      yamlFile: yamlFile,
+      credentials: creds,
+    }
+
+    const credentialParser = new CredentialParser(creds);
     credentialParser.setLoginVariables();
 
+    const output = await SlsCli.run(slsOptions);
+    console.log(`serverless stdout:\n\n${output.stdout}`);
+
+    if (output.stderr) {
+      core.setFailed(output.stderr);
+    }
+
+    core.setOutput('time', new Date().toTimeString());
   } catch (error) {
     core.setFailed(error.message);
   }

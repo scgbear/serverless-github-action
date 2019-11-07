@@ -1,14 +1,14 @@
 import * as core from '@actions/core';
-import { AuthenticationTypeConst } from './constants/authenticationType';
+import { AuthenticationTypeConst, AuthenticationTypeUtil } from './constants/authenticationType';
 import { FormatType, SecretParser } from 'actions-secret-parser';
 
 export class CredentialParser {
     authType: AuthenticationTypeConst;
     credentials: string;
 
-    constructor(authType: AuthenticationTypeConst, credentials: string) {
-        this.authType = authType;
+    constructor(credentials: string) {
         this.credentials = credentials;
+        this.authType = AuthenticationTypeUtil.FromCredentials(credentials);
     }
 
     setLoginVariables() {
@@ -28,32 +28,18 @@ export class CredentialParser {
         }
     }
 
-    setAWSSecrets(secrets:SecretParser) {
-        let accessKeyId = secrets.getSecret('$.accessKeyId', false);
-        let secretAccessKey = secrets.getSecret('$.secretAccessKey', true);
-        if (!accessKeyId || !secretAccessKey) {
-            throw new Error('Not all values are present in the creds object. Ensure accessKeyId and secretAccessKey are supplied');
-        }
-    
-        process.env.AWS_ACCESS_KEY_ID = accessKeyId;
-        process.env.AWS_SECRET_ACCESS_KEY = secretAccessKey;
+    setAWSSecrets(secrets:SecretParser) {   
+        process.env.AWS_ACCESS_KEY_ID = secrets.getSecret('$.accessKeyId', false);
+        process.env.AWS_SECRET_ACCESS_KEY = secrets.getSecret('$.secretAccessKey', true);
         
         core.info('AWS Login settings configured.');    
     }
 
-    setAzureServicePrincipal(secrets:SecretParser) {
-        let servicePrincipalId = secrets.getSecret('$.appId', false);
-        let servicePrincipalKey = secrets.getSecret('$.password', true);
-        let tenantId = secrets.getSecret('$.tenant', false);
-        let subscriptionId = secrets.getSecret('$.subscriptionId', false);
-        if (!servicePrincipalId || !servicePrincipalKey || !tenantId || !subscriptionId) {
-            throw new Error('Not all values are present in the creds object. Ensure clientId, clientSecret, tenantId and subscriptionId are supplied');
-        }
-    
-        process.env.AZURE_SUBSCRIPTION_ID = subscriptionId;
-        process.env.AZURE_TENANT_ID = tenantId;
-        process.env.AZURE_CLIENT_ID = servicePrincipalId;
-        process.env.AZURE_CLIENT_SECRET = servicePrincipalKey;
+    setAzureServicePrincipal(secrets:SecretParser) {   
+        process.env.AZURE_SUBSCRIPTION_ID = secrets.getSecret('$.subscriptionId', false);
+        process.env.AZURE_TENANT_ID = secrets.getSecret('$.tenant', false);
+        process.env.AZURE_CLIENT_ID = secrets.getSecret('$.appId', false);
+        process.env.AZURE_CLIENT_SECRET = secrets.getSecret('$.password', true);
         
         core.info('Azure Login settings configured.');    
     }

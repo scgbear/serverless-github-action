@@ -6,13 +6,9 @@ inputs:
     description: 'The serverless yaml file'
     required: true
     default: 'serverless.yml'
-  credentialsSecret: 
-    description: 'The name of the GitHub secret that has the login credentials configured'
+  credentials: 
+    description: 'The login credentials for deploying'
     required: true
-  authType: 
-    description: 'Type of authorization to parse. Options include AWS and Azure'
-    required: true
-    default: 'Azure'
 runs:
   using: 'node12'
   main: 'lib/main.js'

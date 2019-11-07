@@ -4,12 +4,17 @@ export enum AuthenticationTypeConst {
 }
 
 export class AuthenticationTypeUtil {
-    public static FromString(type:string) : AuthenticationTypeConst {
-        let typeInLowerCase = type.trim().toLocaleLowerCase();
-        if(typeInLowerCase === 'aws') {
-            return AuthenticationTypeConst.AWS;
-        } else {
+    public static FromCredentials(credentials:string) : AuthenticationTypeConst {
+        const creds = JSON.parse(credentials);
+
+        if(creds.appId && creds.password && creds.tenant && creds.subscriptionId){
             return AuthenticationTypeConst.Azure;
         }
+
+        if(creds.accessKeyId && creds.secretAccessKey){
+            return AuthenticationTypeConst.AWS;
+        }
+        
+        throw new Error('Invalid credentials provided');
     }
 }
