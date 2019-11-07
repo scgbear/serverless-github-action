@@ -4,7 +4,7 @@ import { execSync, IExecSyncResult } from './utility';
 
 export class SlsCli {
   public static async run(slsOptions: SlsOptions) {
-    throwIfError(execSync("npx", " sls --version"));
+    throwIfError(execSync("npx", "--version"));
     const response = execSync("npx", `sls ${slsOptions.command}`);
     return response;
   }
