@@ -36,7 +36,8 @@
   "dependencies": {
     "@actions/core": "^1.2.0",
     "@actions/exec": "^1.0.1",
-    "actions-secret-parser": "^1.0.2"
+    "actions-secret-parser": "^1.0.2",
+    "serverless": "^1.57.0"
   },
   "devDependencies": {
     "@types/jest": "^24.0.22",

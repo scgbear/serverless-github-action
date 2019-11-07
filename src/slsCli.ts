@@ -1,11 +1,11 @@
 import * as core from '@actions/core';
 import { SlsOptions } from './slsOptions';
-import { execSync, IExecSyncResult, IExecSyncOptions } from './utility';
+import { execSync, IExecSyncResult } from './utility';
 
 export class SlsCli {
   public static async run(slsOptions: SlsOptions) {
-    throwIfError(execSync("serverless", "--version"));
-    const response = execSync("serverless", slsOptions.command);
+    throwIfError(execSync("npx", " sls --version"));
+    const response = execSync("npx", `sls ${slsOptions.command}`);
     return response;
   }
 }

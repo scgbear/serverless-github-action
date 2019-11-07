@@ -2,7 +2,6 @@ import * as core from '@actions/core';
 import { SlsCli } from './slsCli';
 import { SlsOptions } from './slsOptions';
 import { CredentialParser } from './CredentialParser';
-import { initServerless} from './initializeServerless';
 
 async function run() {
   try {
@@ -22,8 +21,6 @@ async function run() {
 
     const credentialParser = new CredentialParser(creds);
     credentialParser.setLoginVariables();
-
-    initServerless();
     
     const output = await SlsCli.run(slsOptions);
     console.log(`serverless stdout:\n\n${output.stdout}`);
