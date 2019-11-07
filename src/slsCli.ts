@@ -4,8 +4,8 @@ import { execSync, IExecSyncResult, IExecSyncOptions } from './utility';
 
 export class SlsCli {
   public static async run(slsOptions: SlsOptions) {
-    throwIfError(execSync("npx", "sls version"));
-    const response = execSync("npx", `sls ${slsOptions.command}`);
+    throwIfError(execSync("serverless", "--version"));
+    const response = execSync("serverless", slsOptions.command);
     return response;
   }
 }
